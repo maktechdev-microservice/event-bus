@@ -12,15 +12,33 @@ app.get("/events", (req, resp) => {
     resp.send("<h1>Hello from Event Bus</h1>")
 })
 
-app.post("/events", (req, res) => {
+app.post("/events",  async (req, res) => {
     const event = req.body
     console.log(`Event: ${event.type}`)
-    const url = (p) => `http://localhost/${p}/events`
+    const url = (p) => `http://localhost:${p}/events`
     const receivingPorts = [4000, 4001, 4002]
-    receivingPorts.map(async (p) => await axios.post(url(p), event).catch(err => {
-        console.log(`Event Bus reports  ${err}`)
-    }
-    ))
+
+    // const urls = receivingPorts.map(p => {
+    //     const result = url(p)
+    //     console.log(`result: ${result}`)
+    //     return result
+    // })
+
+    
+    
+    // urls.forEach(async d => {
+    //     await axios.post(d, event).catch(err => {
+    //         console.log(`Event Bus reports:  ${err}`)
+    //     })
+    //     }
+    // )
+
+    receivingPorts.map(async (p) => {
+        await axios.post(url(p), event).catch(err => {
+            console.log(`Event Bus reports: ${err}`)
+        }
+        )
+    })
     res.send({status: 'OK'})
 })
 
