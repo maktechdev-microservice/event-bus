@@ -16,22 +16,7 @@ app.post("/events",  async (req, res) => {
     const event = req.body
     console.log(`Event: ${event.type}`)
     const url = (p) => `http://localhost:${p}/events`
-    const receivingPorts = [4000, 4001, 4002]
-
-    // const urls = receivingPorts.map(p => {
-    //     const result = url(p)
-    //     console.log(`result: ${result}`)
-    //     return result
-    // })
-
-    
-    
-    // urls.forEach(async d => {
-    //     await axios.post(d, event).catch(err => {
-    //         console.log(`Event Bus reports:  ${err}`)
-    //     })
-    //     }
-    // )
+    const receivingPorts = [4000, 4001, 4002, 4003]
 
     receivingPorts.map(async (p) => {
         await axios.post(url(p), event).catch(err => {
