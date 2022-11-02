@@ -18,12 +18,12 @@ app.post("/events",  async (req, res) => {
     const event = req.body
     console.log(`Event: ${event.type}`)
     events.push(event)
-    const url = (p) => `http://localhost:${p}/events`
-    const receivingPorts = [4000, 4001, 4002, 4003]
+    const url = (ip) => `http://${ip}/events`
+    const receivingIPs = ['posts-clusterip-srv:4000', 'comments-clusterip-srv:4001', 'query-clusterip-srv:4002', 'moderator-clusterip-srv:4003']
 
-    receivingPorts.map(async (p) => {
-        await axios.post(url(p), event).catch(err => {
-            console.log(`Event Bus reports: ${err} to post to ${p}`)
+    receivingIPs.map(async (d) => {
+        await axios.post(url(d), event).catch(err => {
+            console.log(`Event Bus reports: ${err} to post to ${d}`)
         }
         )
     })
